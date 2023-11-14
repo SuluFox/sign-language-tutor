@@ -12,7 +12,7 @@
         <div class="container cards" style="background-color: rgba(0, 0, 0, 0.5);">
             @foreach ($category->contents as $content)
                 <div class="card" style="width: 18rem;">
-                    <img src="{{ $content->image_url ? route('storage.content.show', ['filename' => $content->image_url]) : '' }}" class="card-img-top" alt="...">
+                    <img src="{{ route('storage.content.show', ['filename' => $content->image_url]) }}" class="card-img-top" alt="...">
                     <div class="card-body">
                         <h3>{{ $content->name }}</h3>
                         <p class="card-text">{{ $content->description }}</p>

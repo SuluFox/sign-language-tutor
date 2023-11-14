@@ -1,80 +1,90 @@
 <!doctype html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
+
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="{{ asset('/css/bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/plugins/owl.carousel.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('font/flaticon.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"
+        integrity="sha512-AA1Bzp5Q0K1KanKKmvN/4d3IRKVlv9PYgwFPvm32nPO6QS8yH1HO7LbgB1pgiOxPtfeg5zEn2ba64MUcqJx6CA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-    <!-- Scripts -->
-    @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
+
 <body>
-    <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+    <div id="show_menuitems" class="my-menu">
+        <div class="menu-box">
+            <span>
+                <i onclick="hide_menu()" class="flaticon-cancel"></i>
+            </span>
+            <ul>
+                <li><a onclick="hide_menu()" href="{{ route('profile') }}">Profile</a></li>
+                <li>
+                    <a href="#"
+                        onclick="event.preventDefault(); hide_menu(); document.getElementById('logout-form').submit();">
+                        {{ __('Logout') }}
+                    </a>
+
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        @csrf
+                    </form>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+
+    <section id="home">
+        <header>
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav me-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ms-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
-
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
+                <div class="main-nav">
+                    <div class="logo">
+                        <a href="{{ route('home') }}" style="text-decoration: none;">
+                            <h2 style="color: white;">Sign<span style="color: rgb(52, 239, 176);">Lingo</span></h2>
+                        </a>
+                    </div>
+                    <div onclick="show_menu()" class="my-toogle">
+                        <span><i class="flaticon-menu"></i></span>
+                    </div>
                 </div>
             </div>
-        </nav>
-
-        <main class="py-4">
             @yield('content')
-        </main>
-    </div>
+        </header>
+    </section>
+
+    @if (Session::has('success'))
+        <script>
+            swal("Success", "{{ Session::get('success') }}", 'success', {
+                button: "OK",
+                // timer: 3000,
+            });
+        </script>
+    @endif
+    @if (Session::has('info'))
+        <script>
+            swal("Information", "{{ Session::get('info') }}", 'info', {
+                button: "OK",
+                // timer: 3000,
+            });
+        </script>
+    @endif
+    @if (Session::has('error'))
+        <script>
+            swal("Error", "{{ Session::get('error') }}", 'error', {
+                button: "OK",
+                // timer: 3000,
+                dangerMode: true,
+            });
+        </script>
+    @endif
+    <script src="{{ asset('js/jquery-3.2.1.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('js/scripts.js') }}"></script>
 </body>
+
 </html>
