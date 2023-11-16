@@ -21,16 +21,10 @@ class CategoryController extends Controller
         return view('category',compact('level'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
+     * Method to save new Category of Levels
      */
     public function store(Request $request)
     {
@@ -50,42 +44,14 @@ class CategoryController extends Controller
             return redirect()->back()->with('error', $e->getMessage());
         }
     }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(category $category)
-    {
-        //
-    }
-
-
-    public function showAll(Level $level)
-    {
-    }
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(category $category)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, category $category)
-    {
-        //
-    }
-
+    
     /**
      * Remove the specified resource from storage.
+     * Delete a specific Category 
      */
     public function destroy(Category $category)
     {
-        //
-        // dd('deleted');
+        
         try {
             DB::beginTransaction();
             $category->delete();
@@ -93,7 +59,7 @@ class CategoryController extends Controller
             return redirect()->back()->with('success', 'Category Deleted');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'something went wrong');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }

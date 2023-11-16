@@ -22,16 +22,10 @@ class LevelController extends Controller
         return view('home',compact('levels'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage.\
+     * Method to store a new level 
      */
     public function store(Request $request)
     {
@@ -50,33 +44,14 @@ class LevelController extends Controller
         }catch(\Exception $e){
             DB::rollBack();
             
-            return redirect()->back()->with('error', 'Something went wrong');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(level $level)
-    {
-        //
-    }
-
-    public function showAll(level $level)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(level $level)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
+     * Method to update a level
      */
     public function update(Request $request, level $level)
     {
@@ -92,17 +67,17 @@ class LevelController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->back()->with('error', 'Something went wrong');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 
     /**
      * Remove the specified resource from storage.
+     * Method to delete a level
      */
     public function destroy(level $level)
     {
         //
-        // dd('deleted');
         try {
             DB::beginTransaction();
             $level->delete();
@@ -110,7 +85,7 @@ class LevelController extends Controller
             return redirect()->back()->with('success', 'Level Deleted');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'something went wrong');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }

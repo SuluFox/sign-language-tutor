@@ -22,15 +22,8 @@ class ContentController extends Controller
         return view('learning',compact('category'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
+    /**Function to save uploaded images for content of a category
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
@@ -43,11 +36,9 @@ class ContentController extends Controller
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $imageName = time() . '_' . $image->getClientOriginalName();
-
-                // Move the uploaded image to the public/images/project folder
+ 
                 $image->storeAs('public/images/content/', $imageName);
-
-                // Save the image URL to the database
+ 
                 $content->image_url =  $imageName;
             }
             $content->name = $request->name;
@@ -67,28 +58,16 @@ class ContentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(content $content)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(content $content)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.
+     * Method to update a Conent using the ID 
      */
-    public function update(Request $request, content $content)
+    public function update(Request $request)
     {
         //
+        $content = Content::findorfail($request->content_id);
         try {
             DB::beginTransaction();
 
@@ -110,7 +89,7 @@ class ContentController extends Controller
             $content->save();
 
             DB::commit();
-            return redirect()->back()->with('success', 'Content updtaed successfully.');
+            return redirect()->back()->with('success', 'Content '.$content->name.' updated successfully.');
             
         } catch (\Exception $e) {
             if (isset($imageName)) {
@@ -124,6 +103,7 @@ class ContentController extends Controller
 
     /**
      * Remove the specified resource from storage.
+     * Method to Delete a content 
      */
     public function destroy(content $content)
     {
@@ -142,7 +122,7 @@ class ContentController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
 
-            return redirect()->back()->with('error', 'Error: ' . $e->getMessage());
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }
